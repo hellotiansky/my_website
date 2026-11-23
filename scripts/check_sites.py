@@ -8,7 +8,7 @@ import re
 import sys
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from urllib.error import HTTPError
 from urllib.request import Request, urlopen
@@ -17,6 +17,20 @@ ROOT = Path(__file__).resolve().parents[1]
 CONFIG = ROOT / "sites.json"
 LOG = ROOT / "logs" / "daily-access-log.csv"
 TIMEOUT = 20
+
+# Daily target starts at 02:17 UTC (11:17 Japan time) on this date.
+# It moves forward by 15 minutes each day and wraps naturally every 96 days.
+SCHEDULE_ANCHOR = datetime(2026, 11, 23, 2, 17, tzinfo=timezone.utc)
+
+
+def is_scheduled_check_due(now: datetime) -> bool:
+    days_elapsed = (now.date() - SCHEDULE_ANCHOR.date()).days
+    if days_elapsed < 0:
+        return False
+    target = SCHEDULE_ANCHOR + timedelta(minutes=15 * days_elapsed)
+    # Cron fires on the matching 15-minute slot. Allow up to 15 minutes
+    # for GitHub Actions queue delays, without overlapping the next slot.
+    return target <= now < target + timedelta(minutes=15)
 
 
 def check(url: str) -> dict:
@@ -76,6 +90,12 @@ def append_log(results: list[dict], checked_at: datetime) -> tuple[int, int]:
 
 
 def main() -> int:
+    if os.environ.get("SCHEDULED_RUN", "").lower() == "true":
+        now = datetime.now(timezone.utc)
+        if not is_scheduled_check_due(now):
+            print("Not today's rotating check time; skipping this 15-minute scheduler tick.")
+            return 0
+
     with CONFIG.open(encoding="utf-8") as file:
         urls = json.load(file).get("urls", [])
     if not urls:
