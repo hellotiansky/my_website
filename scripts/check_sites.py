@@ -27,7 +27,13 @@ def is_scheduled_check_due(now: datetime) -> bool:
     days_elapsed = (now.date() - SCHEDULE_ANCHOR.date()).days
     if days_elapsed < 0:
         return False
-    target = SCHEDULE_ANCHOR + timedelta(minutes=15 * days_elapsed)
+    target_minute = (SCHEDULE_ANCHOR.hour * 60 + SCHEDULE_ANCHOR.minute + 15 * days_elapsed) % (24 * 60)
+    target = now.replace(
+        hour=target_minute // 60,
+        minute=target_minute % 60,
+        second=0,
+        microsecond=0,
+    )
     # Cron fires on the matching 15-minute slot. Allow up to 15 minutes
     # for GitHub Actions queue delays, without overlapping the next slot.
     return target <= now < target + timedelta(minutes=15)
