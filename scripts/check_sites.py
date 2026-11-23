@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Check configured websites once and append one CSV row per URL to the daily log."""
+"""Check configured websites three times daily and append CSV rows to the daily log."""
 
 import csv
 import json
@@ -18,25 +18,32 @@ CONFIG = ROOT / "sites.json"
 LOG = ROOT / "logs" / "daily-access-log.csv"
 TIMEOUT = 20
 
-# Daily target starts at 02:17 UTC (11:17 Japan time) on this date.
-# It moves forward by 15 minutes each day and wraps naturally every 96 days.
+# First daily check starts at 02:17 UTC (11:17 Japan time) on this date.
+# The daily start moves forward by 15 minutes; checks repeat every 8 hours.
+# The start time wraps naturally every 96 days.
 SCHEDULE_ANCHOR = datetime(2026, 11, 23, 2, 17, tzinfo=timezone.utc)
+CHECKS_PER_DAY = 3
+CHECK_INTERVAL_HOURS = 8
 
 
 def is_scheduled_check_due(now: datetime) -> bool:
     days_elapsed = (now.date() - SCHEDULE_ANCHOR.date()).days
     if days_elapsed < 0:
         return False
-    target_minute = (SCHEDULE_ANCHOR.hour * 60 + SCHEDULE_ANCHOR.minute + 15 * days_elapsed) % (24 * 60)
-    target = now.replace(
-        hour=target_minute // 60,
-        minute=target_minute % 60,
-        second=0,
-        microsecond=0,
-    )
-    # Cron fires on the matching 15-minute slot. Allow up to 15 minutes
-    # for GitHub Actions queue delays, without overlapping the next slot.
-    return target <= now < target + timedelta(minutes=15)
+    daily_start_minute = (
+        SCHEDULE_ANCHOR.hour * 60 + SCHEDULE_ANCHOR.minute + 15 * days_elapsed
+    ) % (24 * 60)
+    current_minute = now.hour * 60 + now.minute
+
+    # Three checks per day, spaced eight hours apart from the rotating start.
+    # Cron fires every 15 minutes; allow one slot for queue delay.
+    for check_index in range(CHECKS_PER_DAY):
+        target_minute = (
+            daily_start_minute + check_index * CHECK_INTERVAL_HOURS * 60
+        ) % (24 * 60)
+        if target_minute <= current_minute < target_minute + 15:
+            return True
+    return False
 
 
 def check(url: str) -> dict:
