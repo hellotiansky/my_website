@@ -2,8 +2,9 @@ name: Daily website availability check
 
 on:
   schedule:
-    # Every day at 02:17 UTC (10:17 China time / 11:17 Japan time)
-    - cron: "17 2 * * *"
+    # Poll every 15 minutes; the script only performs checks at its
+    # gradually-shifting daily target time.
+    - cron: "2,17,32,47 * * * *"
   workflow_dispatch:
 
 permissions:
@@ -29,6 +30,8 @@ jobs:
       - name: Check configured websites and append CSV log
         id: site_check
         continue-on-error: true
+        env:
+          SCHEDULED_RUN: ${{ github.event_name == 'schedule' }}
         run: python scripts/check_sites.py
 
       - name: Commit and push daily access log
