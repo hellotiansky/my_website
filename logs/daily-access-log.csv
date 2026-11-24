@@ -8,3 +8,18 @@ checked_at_utc,date_utc,run_id,url,outcome,http_status,duration_seconds,error,ru
 2026-11-23T12:06:48+00:00,2026-11-23,45171187528,https://jietushot.anyblog.home64.de/,SUCCESS,200,0.267,,9,0,9
 2026-11-23T12:06:48+00:00,2026-11-23,45171187528,https://jietuba.openworld.xwx.me/,SUCCESS,200,0.595,,9,0,9
 2026-11-23T12:06:48+00:00,2026-11-23,45171187528,https://curseen.anysky.ipv64.net/,SUCCESS,200,0.365,,9,0,9
+2026-11-24T02:16:46+00:00,2026-11-24,45311176510,https://index.curseen.is-local.org/,SUCCESS,200,0.33,,13,2,15
+2026-11-24T02:16:46+00:00,2026-11-24,45311176510,https://study.kittyblog.de5.net/,SUCCESS,200,0.486,,13,2,15
+2026-11-24T02:16:46+00:00,2026-11-24,45311176510,https://openworld.tianskyblog.ccwu.cc/,SUCCESS,200,0.645,,13,2,15
+2026-11-24T02:16:46+00:00,2026-11-24,45311176510,https://curseen.anygoworld.loc.cc/,FAILURE,,0.314,URLError: <urlopen error [Errno -2] Name or service not known>,13,2,15
+2026-11-24T02:16:46+00:00,2026-11-24,45311176510,https://jietuba.coolshot.is-cool.dev/,SUCCESS,200,0.535,,13,2,15
+2026-11-24T02:16:46+00:00,2026-11-24,45311176510,https://curseen.openeyes.loc.cc/,FAILURE,,0.271,URLError: <urlopen error [Errno -2] Name or service not known>,13,2,15
+2026-11-24T02:16:46+00:00,2026-11-24,45311176510,https://jietuba.anyworld.ipv64.de/,SUCCESS,200,0.533,,13,2,15
+2026-11-24T02:16:46+00:00,2026-11-24,45311176510,https://jietuba.openworld.xwx.me/,SUCCESS,200,0.7,,13,2,15
+2026-11-24T02:16:46+00:00,2026-11-24,45311176510,https://jietuba.bluesky.xwx.me/,SUCCESS,200,0.731,,13,2,15
+2026-11-24T02:16:46+00:00,2026-11-24,45311176510,https://curseen.dropblog.ipv64.net/,SUCCESS,200,0.34,,13,2,15
+2026-11-24T02:16:46+00:00,2026-11-24,45311176510,https://jietuba.bluesky.home64.de/,SUCCESS,200,0.569,,13,2,15
+2026-11-24T02:16:46+00:00,2026-11-24,45311176510,https://dropwall.openworld.sryze.cc/,SUCCESS,200,2.334,,13,2,15
+2026-11-24T02:16:46+00:00,2026-11-24,45311176510,https://jietushot.anyblog.home64.de/,SUCCESS,200,0.74,,13,2,15
+2026-11-24T02:16:46+00:00,2026-11-24,45311176510,https://jietuba.openworld.hidns.co/,SUCCESS,200,0.377,,13,2,15
+2026-11-24T02:16:46+00:00,2026-11-24,45311176510,https://curseen.anysky.ipv64.net/,SUCCESS,200,0.577,,13,2,15
