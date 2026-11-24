@@ -9,6 +9,7 @@ import sys
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timedelta, timezone
+from zoneinfo import ZoneInfo
 from pathlib import Path
 from urllib.error import HTTPError
 from urllib.request import Request, urlopen
@@ -17,6 +18,7 @@ ROOT = Path(__file__).resolve().parents[1]
 CONFIG = ROOT / "sites.json"
 LOG = ROOT / "logs" / "daily-access-log.csv"
 TIMEOUT = 20
+BEIJING_TZ = ZoneInfo("Asia/Shanghai")
 
 # First daily check starts at 02:17 UTC (11:17 Japan time) on this date.
 # The daily start moves forward by 15 minutes; checks repeat every 8 hours.
@@ -79,11 +81,12 @@ def append_log(results: list[dict], checked_at: datetime) -> tuple[int, int]:
     failure_count = len(results) - success_count
     LOG.parent.mkdir(parents=True, exist_ok=True)
     fields = [
-        "checked_at_utc", "date_utc", "run_id", "url", "outcome",
+        "checked_at_beijing", "date_beijing", "run_id", "url", "outcome",
         "http_status", "duration_seconds", "error",
         "run_success_count", "run_failure_count", "run_total",
     ]
     run_id = os.environ.get("GITHUB_RUN_ID", checked_at.strftime("%Y%m%dT%H%M%SZ"))
+    checked_at_beijing = checked_at.astimezone(BEIJING_TZ)
     needs_header = not LOG.exists() or LOG.stat().st_size == 0
     with LOG.open("a", newline="", encoding="utf-8") as file:
         writer = csv.DictWriter(file, fieldnames=fields)
@@ -91,14 +94,27 @@ def append_log(results: list[dict], checked_at: datetime) -> tuple[int, int]:
             writer.writeheader()
         for item in results:
             writer.writerow({
-                "checked_at_utc": checked_at.isoformat(timespec="seconds"),
-                "date_utc": checked_at.date().isoformat(),
+                "checked_at_beijing": checked_at_beijing.isoformat(timespec="seconds"),
+                "date_beijing": checked_at_beijing.date().isoformat(),
                 "run_id": run_id,
                 **item,
                 "run_success_count": success_count,
                 "run_failure_count": failure_count,
                 "run_total": len(results),
             })
+
+    # Keep the newest check first across the entire accumulated history.
+    with LOG.open(newline="", encoding="utf-8") as file:
+        reader = csv.DictReader(file)
+        rows = list(reader)
+    rows.sort(
+        key=lambda row: datetime.fromisoformat(row["checked_at_beijing"]),
+        reverse=True,
+    )
+    with LOG.open("w", newline="", encoding="utf-8") as file:
+        writer = csv.DictWriter(file, fieldnames=fields)
+        writer.writeheader()
+        writer.writerows(rows)
     return success_count, failure_count
 
 
