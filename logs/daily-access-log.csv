@@ -23,3 +23,19 @@ checked_at_utc,date_utc,run_id,url,outcome,http_status,duration_seconds,error,ru
 2026-11-24T02:16:46+00:00,2026-11-24,45311176510,https://jietushot.anyblog.home64.de/,SUCCESS,200,0.74,,13,2,15
 2026-11-24T02:16:46+00:00,2026-11-24,45311176510,https://jietuba.openworld.hidns.co/,SUCCESS,200,0.377,,13,2,15
 2026-11-24T02:16:46+00:00,2026-11-24,45311176510,https://curseen.anysky.ipv64.net/,SUCCESS,200,0.577,,13,2,15
+2026-11-24T04:54:45+00:00,2026-11-24,45329612630,https://openworld.tianskyblog.ccwu.cc/,SUCCESS,200,0.245,,14,2,16
+2026-11-24T04:54:45+00:00,2026-11-24,45329612630,https://study.kittyblog.de5.net/,SUCCESS,200,0.27,,14,2,16
+2026-11-24T04:54:45+00:00,2026-11-24,45329612630,https://index.curseen.is-local.org/,SUCCESS,200,0.401,,14,2,16
+2026-11-24T04:54:45+00:00,2026-11-24,45329612630,https://curshot.anygoworld.loc.cc/,FAILURE,,0.235,URLError: <urlopen error [Errno -2] Name or service not known>,14,2,16
+2026-11-24T04:54:45+00:00,2026-11-24,45329612630,https://jietuba.coolshot.is-cool.dev/,SUCCESS,200,0.335,,14,2,16
+2026-11-24T04:54:45+00:00,2026-11-24,45329612630,https://curshot.openeyes.loc.cc/,FAILURE,,0.229,URLError: <urlopen error [Errno -2] Name or service not known>,14,2,16
+2026-11-24T04:54:45+00:00,2026-11-24,45329612630,https://jietuba.openworld.xwx.me/,SUCCESS,200,0.494,,14,2,16
+2026-11-24T04:54:45+00:00,2026-11-24,45329612630,https://jietuba.bluesky.xwx.me/,SUCCESS,200,0.621,,14,2,16
+2026-11-24T04:54:45+00:00,2026-11-24,45329612630,https://jietuba.anyworld.ipv64.de/,SUCCESS,200,0.58,,14,2,16
+2026-11-24T04:54:45+00:00,2026-11-24,45329612630,https://jietuba.bluesky.home64.de/,SUCCESS,200,0.508,,14,2,16
+2026-11-24T04:54:45+00:00,2026-11-24,45329612630,https://curseen.dropblog.ipv64.net/,SUCCESS,200,0.442,,14,2,16
+2026-11-24T04:54:45+00:00,2026-11-24,45329612630,https://jietushot.anyblog.home64.de/,SUCCESS,200,0.564,,14,2,16
+2026-11-24T04:54:45+00:00,2026-11-24,45329612630,https://shot.jietuba.hidns.vip/,SUCCESS,200,0.256,,14,2,16
+2026-11-24T04:54:45+00:00,2026-11-24,45329612630,https://dropwall.openworld.sryze.cc/,SUCCESS,200,1.914,,14,2,16
+2026-11-24T04:54:45+00:00,2026-11-24,45329612630,https://jietuba.openworld.hidns.co/,SUCCESS,200,0.278,,14,2,16
+2026-11-24T04:54:45+00:00,2026-11-24,45329612630,https://curseen.anysky.ipv64.net/,SUCCESS,200,0.558,,14,2,16
