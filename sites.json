@@ -1,14 +1,20 @@
 {
-  "description": "Public website endpoints listed as static/backup pages in hellotiansky/person_docx",
+  "description": "Website endpoints listed as Page, NO-CF-Page, or static backup pages in hellotiansky/person_docx",
   "urls": [
+    "https://openworld.tianskyblog.ccwu.cc/",
+    "https://study.kittyblog.de5.net/",
+    "https://dropwall.openworld.sryze.cc/",
     "https://index.curseen.is-local.org/",
     "https://jietuba.coolshot.is-cool.dev/",
     "https://curseen.anygoworld.loc.cc/",
     "https://curseen.openeyes.loc.cc/",
     "https://jietuba.openworld.xwx.me/",
     "https://jietuba.bluesky.xwx.me/",
-    "https://jietuba.openworld.hidns.co/",
+    "https://jietuba.anyworld.ipv64.de/",
+    "https://jietuba.bluesky.home64.de/",
+    "https://curseen.dropblog.ipv64.net/",
     "https://jietushot.anyblog.home64.de/",
-    "https://curseen.anysky.ipv64.net/"
+    "https://curseen.anysky.ipv64.net/",
+    "https://jietuba.openworld.hidns.co/"
   ]
 }
