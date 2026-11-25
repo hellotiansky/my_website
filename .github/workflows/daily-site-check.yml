@@ -2,8 +2,8 @@ name: Daily website availability check
 
 on:
   schedule:
-    # Poll every 15 minutes; the script only performs checks at its
-    # gradually-shifting daily target time.
+    # Poll every 15 minutes; the script accepts a 2-hour window per target
+    # and uses schedule_slot in the CSV to prevent duplicate checks.
     - cron: "2,17,32,47 * * * *"
   workflow_dispatch:
 
