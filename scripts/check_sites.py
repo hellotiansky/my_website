@@ -28,24 +28,30 @@ CHECKS_PER_DAY = 3
 CHECK_INTERVAL_HOURS = 8
 
 
-def is_scheduled_check_due(now: datetime) -> bool:
+SCHEDULE_WINDOW = timedelta(hours=2)
+
+
+def due_schedule_slot(now: datetime) -> str | None:
+    """Return the unique UTC target for the current slot, allowing 2h of queue delay."""
     days_elapsed = (now.date() - SCHEDULE_ANCHOR.date()).days
     if days_elapsed < 0:
-        return False
-    daily_start_minute = (
-        SCHEDULE_ANCHOR.hour * 60 + SCHEDULE_ANCHOR.minute + 15 * days_elapsed
-    ) % (24 * 60)
-    current_minute = now.hour * 60 + now.minute
+        return None
 
-    # Three checks per day, spaced eight hours apart from the rotating start.
-    # Cron fires every 15 minutes; allow one slot for queue delay.
-    for check_index in range(CHECKS_PER_DAY):
-        target_minute = (
-            daily_start_minute + check_index * CHECK_INTERVAL_HOURS * 60
-        ) % (24 * 60)
-        if target_minute <= current_minute < target_minute + 15:
-            return True
-    return False
+    # Check nearby anchor days because the final daily slot can cross midnight.
+    for day_index in range(max(0, days_elapsed - 2), days_elapsed + 2):
+        daily_start = SCHEDULE_ANCHOR + timedelta(days=day_index, minutes=15 * day_index)
+        for check_index in range(CHECKS_PER_DAY):
+            target = daily_start + timedelta(hours=check_index * CHECK_INTERVAL_HOURS)
+            if target <= now < target + SCHEDULE_WINDOW:
+                return target.isoformat(timespec="seconds")
+    return None
+
+
+def schedule_slot_already_logged(slot: str) -> bool:
+    if not LOG.exists() or LOG.stat().st_size == 0:
+        return False
+    with LOG.open(newline="", encoding="utf-8") as file:
+        return any(row.get("schedule_slot") == slot for row in csv.DictReader(file))
 
 
 def check(url: str) -> dict:
@@ -76,12 +82,14 @@ def check(url: str) -> dict:
         }
 
 
-def append_log(results: list[dict], checked_at: datetime) -> tuple[int, int]:
+def append_log(
+    results: list[dict], checked_at: datetime, schedule_slot: str = ""
+) -> tuple[int, int]:
     success_count = sum(item["outcome"] == "SUCCESS" for item in results)
     failure_count = len(results) - success_count
     LOG.parent.mkdir(parents=True, exist_ok=True)
     fields = [
-        "checked_at_beijing", "date_beijing", "run_id", "url", "outcome",
+        "checked_at_beijing", "date_beijing", "run_id", "schedule_slot", "url", "outcome",
         "http_status", "duration_seconds", "error",
         "run_success_count", "run_failure_count", "run_total",
     ]
@@ -97,6 +105,7 @@ def append_log(results: list[dict], checked_at: datetime) -> tuple[int, int]:
                 "checked_at_beijing": checked_at_beijing.isoformat(timespec="seconds"),
                 "date_beijing": checked_at_beijing.date().isoformat(),
                 "run_id": run_id,
+                "schedule_slot": schedule_slot,
                 **item,
                 "run_success_count": success_count,
                 "run_failure_count": failure_count,
@@ -119,10 +128,15 @@ def append_log(results: list[dict], checked_at: datetime) -> tuple[int, int]:
 
 
 def main() -> int:
+    schedule_slot = ""
     if os.environ.get("SCHEDULED_RUN", "").lower() == "true":
         now = datetime.now(timezone.utc)
-        if not is_scheduled_check_due(now):
-            print("Not today's rotating check time; skipping this 15-minute scheduler tick.")
+        schedule_slot = due_schedule_slot(now) or ""
+        if not schedule_slot:
+            print("Outside the 2-hour rotating check window; skipping this scheduler tick.")
+            return 0
+        if schedule_slot_already_logged(schedule_slot):
+            print(f"Schedule slot {schedule_slot} was already checked; skipping duplicate tick.")
             return 0
 
     with CONFIG.open(encoding="utf-8") as file:
@@ -142,7 +156,7 @@ def main() -> int:
             print(f"[{item['outcome']}] {status:32} {item['url']}")
 
     checked_at = datetime.now(timezone.utc)
-    success_count, failure_count = append_log(results, checked_at)
+    success_count, failure_count = append_log(results, checked_at, schedule_slot)
     print(f"\nSummary: {success_count} successful, {failure_count} failed, {len(results)} total.")
     print(f"Appended {len(results)} row(s) to {LOG.relative_to(ROOT)}")
     return 1 if failure_count else 0
