@@ -1,4 +1,4 @@
-checked_at_beijing,date_beijing,run_id,url,outcome,http_status,duration_seconds,error,run_success_count,run_failure_count,run_total,
+checked_at_beijing,date_beijing,run_id,url,outcome,http_status,duration_seconds,error,run_success_count,run_failure_count,run_total,schedule_slot
 2026-11-24T13:04:54+08:00,2026-11-24,45330749545,https://study.kittyblog.de5.net/,SUCCESS,200,0.287,,14,0,14,
 2026-11-24T13:04:54+08:00,2026-11-24,45330749545,https://index.curseen.is-local.org/,SUCCESS,200,0.354,,14,0,14,
 2026-11-24T13:04:54+08:00,2026-11-24,45330749545,https://openworld.tianskyblog.ccwu.cc/,SUCCESS,200,0.45,,14,0,14,
