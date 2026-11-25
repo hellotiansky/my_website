@@ -89,9 +89,9 @@ def append_log(
     failure_count = len(results) - success_count
     LOG.parent.mkdir(parents=True, exist_ok=True)
     fields = [
-        "checked_at_beijing", "date_beijing", "run_id", "schedule_slot", "url", "outcome",
+        "checked_at_beijing", "date_beijing", "run_id", "url", "outcome",
         "http_status", "duration_seconds", "error",
-        "run_success_count", "run_failure_count", "run_total",
+        "run_success_count", "run_failure_count", "run_total", "schedule_slot",
     ]
     run_id = os.environ.get("GITHUB_RUN_ID", checked_at.strftime("%Y%m%dT%H%M%SZ"))
     checked_at_beijing = checked_at.astimezone(BEIJING_TZ)
