@@ -1,4 +1,13 @@
 checked_at_beijing,date_beijing,run_id,url,outcome,http_status,duration_seconds,error,run_success_count,run_failure_count,run_total,schedule_slot
+2026-11-28T08:45:09+08:00,2026-11-28,46089538109,https://study.kittyblog.de5.net/,SUCCESS,200,0.277,,9,0,9,
+2026-11-28T08:45:09+08:00,2026-11-28,46089538109,https://index.curseen.is-local.org/,SUCCESS,200,0.388,,9,0,9,
+2026-11-28T08:45:09+08:00,2026-11-28,46089538109,https://openworld.tianskyblog.ccwu.cc/,SUCCESS,200,0.396,,9,0,9,
+2026-11-28T08:45:09+08:00,2026-11-28,46089538109,https://dropwall.openworld.sryze.cc/,SUCCESS,200,0.507,,9,0,9,
+2026-11-28T08:45:09+08:00,2026-11-28,46089538109,https://jietuba.coolshot.is-cool.dev/,SUCCESS,200,0.385,,9,0,9,
+2026-11-28T08:45:09+08:00,2026-11-28,46089538109,https://shot.jietuba.hidns.vip/,SUCCESS,200,0.355,,9,0,9,
+2026-11-28T08:45:09+08:00,2026-11-28,46089538109,https://jietuba.bluesky.xwx.me/,SUCCESS,200,0.529,,9,0,9,
+2026-11-28T08:45:09+08:00,2026-11-28,46089538109,https://jietuba.openworld.xwx.me/,SUCCESS,200,0.539,,9,0,9,
+2026-11-28T08:45:09+08:00,2026-11-28,46089538109,https://jietuba.openworld.hidns.co/,SUCCESS,200,0.272,,9,0,9,
 2026-11-27T18:12:50+08:00,2026-11-27,45980153996,https://index.curseen.is-local.org/,SUCCESS,200,0.206,,9,5,14,
 2026-11-27T18:12:50+08:00,2026-11-27,45980153996,https://study.kittyblog.de5.net/,SUCCESS,200,0.294,,9,5,14,
 2026-11-27T18:12:50+08:00,2026-11-27,45980153996,https://jietuba.coolshot.is-cool.dev/,SUCCESS,200,0.178,,9,5,14,
